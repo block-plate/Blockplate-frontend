@@ -1,5 +1,5 @@
 import {css, DefaultTheme} from 'styled-components'
-import {createTheme} from '@mui/material';
+
 
 export const styledTheme: DefaultTheme = {
     color: {
@@ -27,13 +27,3 @@ export const styledTheme: DefaultTheme = {
         `
     }
 }
-
-export const muiTheme = createTheme({
-    palette: {
-        primary: {
-            main: '#2E2E2E',
-            dark: '#000000',
-        },
-    },
-})
-

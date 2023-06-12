@@ -12,9 +12,19 @@ import PaymentView from "@/components/course/payment_view";
 import {StyledBannerContent, StyledCourseBanner} from "@/pages/course/[course_id]";
 import {wrapper} from "@/features";
 import {isAuthenticationServerSide} from "@/utils/authentication";
+import {marked} from 'marked'
 
 const StyledMyCourse = styled.div`
   padding: 2rem 0;
+  .course-info{
+    .title{
+      font-size: 2rem;
+      font-weight: bold;
+      line-height: 39px;
+      margin-bottom: 1rem;
+    }
+    margin-bottom: 1rem;
+  }
 `;
 
 type MyCourseProps = {
@@ -26,12 +36,14 @@ const MyCourse = (props: MyCourseProps) => {
 
     if(isLoading || !isSuccess) return <></>;
 
+
+    const result = marked(data.result.data);
     return (
         <HomeLayout>
             <StyledCourseBanner>
                 <Responsive>
                     <StyledBannerContent>
-                        <Image src={CourseImage} alt={''}></Image>
+                        <img src={data.result.image} alt={''}></img>
                         <div className='content'>
                             <div className='title'>
                                 {data.result.title}
@@ -44,7 +56,7 @@ const MyCourse = (props: MyCourseProps) => {
                             </div>
                             <div className="rating-container">
                                 <Rating icon='star' defaultRating={5} maxRating={5} disabled className="rating"/>
-                                <b>(4.6)</b>
+                                <b>(0.0)</b>
                             </div>
                             <div className="tag-list">
                                 <div className="tag">
@@ -63,7 +75,15 @@ const MyCourse = (props: MyCourseProps) => {
             </StyledCourseBanner>
             <Responsive>
                 <StyledMyCourse>
-                    <LectureList isInstructor lectures={data.result.lectures} course={data.result}></LectureList>
+                    <div className='course-info'>
+                        <div className="title">
+                            강의 소개
+                        </div>
+                        <div dangerouslySetInnerHTML={{__html: result}}>
+
+                        </div>
+                    </div>
+                    <LectureList isSpend={true} isInstructor lectures={data.result.lectures} course={data.result}></LectureList>
                 </StyledMyCourse>
             </Responsive>
         </HomeLayout>

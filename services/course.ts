@@ -36,6 +36,7 @@ export const courseApi = api.injectEndpoints({
             data: string,
             instructor_id: string,
             image: string,
+            tags: string,
         }>({
             query: (body) => ({
                 url: `/courses/`,

@@ -13,6 +13,7 @@ import {wrapper} from "@/features";
 import {isAuthenticationServerSide} from "@/utils/authentication";
 import {useSelector} from "react-redux";
 import {selectGlobalData} from "@/features/global";
+import {marked} from "marked";
 
 const StyledCourseDetail = styled.div`
   padding: 2rem 0;
@@ -22,6 +23,15 @@ const StyledCourseDetail = styled.div`
   .course-side{
     flex: 1;
     margin-right: 1rem;
+  }
+  .course-info{
+    .title{
+      font-size: 2rem;
+      font-weight: bold;
+      line-height: 39px;
+      margin-bottom: 1rem;
+    }
+    margin-bottom: 1rem;
   }
   .course-header{
     display: flex;
@@ -54,8 +64,9 @@ export const StyledBannerContent = styled.div`
   align-items: center;
   justify-content: flex-start;
   img{
-    height: 70%;
+    //height: 70%;
     width: auto;
+    height: 300px;
     border-radius: 8px;
   }
   .content{
@@ -102,6 +113,7 @@ export const StyledBannerContent = styled.div`
       }
     }
   }
+  
 `
 
 type CourseDetailPageProps = {
@@ -113,15 +125,17 @@ const CourseDetailPage = (props: CourseDetailPageProps) => {
     const {data, isLoading, isSuccess} = useGetCourseQuery({course_id: props.course_id});
     const {data: coursesByUser} = useGetCoursesByUserQuery({user_id: userInfo.user_id});
 
-    const isSpend = coursesByUser?.result.find(course => course.course_id === props.course_id);
+    const isSpend = coursesByUser?.result.find(course => course.course_id === props.course_id) !== undefined;
     if(isLoading || !isSuccess) return <></>;
+
+    const result = marked(data.result.data);
 
     return (
         <HomeLayout>
             <StyledCourseBanner>
                 <Responsive>
                     <StyledBannerContent>
-                        <Image src={CourseImage} alt={''}></Image>
+                        <img src={data.result.image} alt={''}></img>
                         <div className='content'>
                             <div className='title'>
                                 {data.result.title}
@@ -137,15 +151,15 @@ const CourseDetailPage = (props: CourseDetailPageProps) => {
                                 <b>(4.6)</b>
                             </div>
                             <div className="tag-list">
-                                <div className="tag">
-                                    웹앱
-                                </div>
-                                <div className="tag">
-                                    블록체인
-                                </div>
-                                <div className="tag">
-                                    NFT
-                                </div>
+                                {
+                                    data.result.tags.split(',').map((tag, i) => {
+                                        return (
+                                            <div className="tag" key={`tag_${i}`}>
+                                                {tag}
+                                            </div>
+                                        )
+                                    })
+                                }
                             </div>
                         </div>
                     </StyledBannerContent>
@@ -154,7 +168,15 @@ const CourseDetailPage = (props: CourseDetailPageProps) => {
             <Responsive>
                 <StyledCourseDetail>
                     <div className="course-side">
-                        <LectureList course={data.result} lectures={data.result.lectures}></LectureList>
+                        <div className='course-info'>
+                            <div className="title">
+                                강의 소개
+                            </div>
+                            <div dangerouslySetInnerHTML={{__html: result}}>
+
+                            </div>
+                        </div>
+                        <LectureList isSpend={isSpend} course={data.result} lectures={data.result.lectures}></LectureList>
                         <ReviewList reviews={data.result.reviews}></ReviewList>
                     </div>
                     {!isSpend && <PaymentView course={data.result}></PaymentView>}

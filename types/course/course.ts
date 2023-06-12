@@ -11,6 +11,7 @@ export interface Course {
     status: string,
     created_at: Date,
     updated_at: Date,
+    image: string,
     instructor: {
         "name": string
     }
@@ -26,6 +27,8 @@ export interface CourseDetail {
     status: string,
     created_at: Date,
     updated_at: Date,
+    image: string,
+    tags: string,
     instructor: {
         name: string,
         user_id: string,

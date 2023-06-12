@@ -1,6 +1,6 @@
 import {useRouter} from "next/router";
 import {useDispatch, useSelector} from "react-redux";
-import {ChangeEvent, useCallback, useEffect, useState} from "react";
+import {ChangeEvent, useCallback, useEffect, useRef, useState} from "react";
 import {useSignUpMutation} from "services/auth";
 import {toast} from "react-toastify";
 
@@ -9,7 +9,6 @@ export default function useSignup() {
     const dispatch = useDispatch();
 
     const [signUp, signUpResponse] = useSignUpMutation();
-
     const [termAgree, setTermAgree] = useState([false, false, false]);
     const [termAgreeAll, setTermAgreeAll] = useState(false);
 
@@ -22,13 +21,14 @@ export default function useSignup() {
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
     const [isPasswordError, setIsPasswordError] = useState(false);
 
+    const accountRef = useRef(null);
+
     const [input, setInput] = useState({
         pwd: "",
         confirmPassword: "",
         termsAgreed: false,
         email: "",
         name: "",
-        account: ""
     });
 
     useEffect(() => {
@@ -102,11 +102,11 @@ export default function useSignup() {
                 isServiceAgreed: termAgree[1],
                 isMarketingAgreed: termAgree[2],
             }
-
+            const {value} = accountRef.current as any;
             signUp({
                 name: input.name,
                 pwd: input.pwd,
-                account: input.account,
+                account: value,
                 email: input.email
             });
             setIsPasswordError(false);
@@ -147,6 +147,7 @@ export default function useSignup() {
         uppercaseValidate,
         specialValidate,
         isButtonDisabled,
-        isPasswordError
+        isPasswordError,
+        accountRef
     };
 }

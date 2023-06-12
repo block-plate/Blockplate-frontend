@@ -1,6 +1,6 @@
 const { createProxyMiddleware } = require('http-proxy-middleware');
 
-/** @type {import('next').NextConfig} */
+
 const nextConfig = {
   swcMinify: true,
   compiler: {
@@ -15,7 +15,7 @@ const nextConfig = {
     ];
   },
 };
-
+/** @type {import('next').NextConfig} */
 const removeImports = require("next-remove-imports")();
 
-module.exports = removeImports(nextConfig)
+module.exports = removeImports({...nextConfig})

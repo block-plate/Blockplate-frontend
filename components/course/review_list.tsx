@@ -32,7 +32,17 @@ const StyledReviewList = styled.div`
           color: ${({theme}) => theme.color.grey2};
         }
       }
+      
     }
+    .empty{
+        width: 100%;
+        min-height: 200px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.25rem;
+        color: ${({theme}) => theme.color.grey2};
+      }
     
 `
 type ReviewListProps = {
@@ -53,7 +63,6 @@ const ReviewList = (props: ReviewListProps) => {
                 </div>
                 <div className="content">
                     {contents}
-
                 </div>
             </div>
         )
@@ -69,7 +78,7 @@ const ReviewList = (props: ReviewListProps) => {
                 </div>
             </div>
             <div className="review-list">
-                {reviewList}
+                {reviewList.length === 0 ? <div className='empty'>아직 등록된 리뷰가 없습니다!</div> : reviewList}
             </div>
         </StyledReviewList>
     )

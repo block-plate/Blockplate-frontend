@@ -5,7 +5,7 @@ import PageFooter from "@/components/common/page-footer";
 
 const StyledHomeLayout = styled.div`
   display: flex;
-  height: 100vh;
+  //height: 100vh;
   flex-direction: column;
   justify-content: space-between;
 `

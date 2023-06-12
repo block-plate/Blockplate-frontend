@@ -27,8 +27,8 @@ const StyledHome = styled.div`
     margin-bottom: 2rem;
     a{
       color: black;
-      max-width: calc(25% - 1em);
-      min-width: calc(25% - 1rem);
+      max-width: calc(33% - 1em);
+      min-width: calc(33% - 1rem);
       flex: 1;
       margin: .5rem;
     }
@@ -79,13 +79,11 @@ const HomePage = (props: HomePageProps) => {
     }
 
     const courseList = data?.result.map(course => {
-        const {course_id, title, amount, instructor: {name}} = course
+        const {course_id} = course;
         return (
             <Link href={`/course/${course_id}`} key={course_id}>
                 <PageCard
-                    title={title}
-                    amount={amount}
-                    instructor={name}
+                    course={course}
                 ></PageCard>
             </Link>
         )

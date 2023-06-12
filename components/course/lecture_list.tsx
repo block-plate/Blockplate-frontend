@@ -45,16 +45,27 @@ const StyledLectureList = styled.div`
           padding: 15px 18px;
           border: 1px solid ${({theme}) => theme.color.grey3};
           border-top: none;
-          img{
-            margin-right: 5px;
+              img{
+                margin-right: 5px;
+              }
+              
+        }
+        .empty{
+            width: 100%;
+            min-height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.25rem;
+            color: ${({theme}) => theme.color.grey2};
           }
-    }
     
 `
 type LectureListProps = {
     lectures: Lecture[],
     isInstructor?: boolean,
     course: CourseDetail,
+    isSpend: boolean
 }
 const LectureList = (props: LectureListProps) => {
     const groups = Array.from(new Set(props.lectures.map(l => l.group))).map(group => {
@@ -72,17 +83,29 @@ const LectureList = (props: LectureListProps) => {
                 </div>
                 {
                     group.lectures.map(lecture => {
-                        const {title, lecture_id, course_id} = lecture
-                        return (
-                            <Link href={`/course/${course_id}/lecture/${lecture_id}`} key={lecture_id}>
-                                <div className="lecture" >
+                        const {title, lecture_id, course_id} = lecture;
+                        if (props.isSpend){
+                            return (
+                                <Link href={`/course/${course_id}/lecture/${lecture_id}`} key={lecture_id}>
+                                    <div className="lecture" >
+                                        <Image src={TimeIcon} alt={'time-icon'}></Image>
+                                        <div>
+                                            {title}
+                                        </div>
+                                    </div>
+                                </Link>
+                            );
+                        }else{
+                            return (
+                                <div  key={lecture_id} className="lecture">
                                     <Image src={TimeIcon} alt={'time-icon'}></Image>
                                     <div>
                                         {title}
                                     </div>
                                 </div>
-                            </Link>
-                        );
+                            )
+                        }
+
                     })
                 }
             </div>
@@ -96,7 +119,7 @@ const LectureList = (props: LectureListProps) => {
                         커리큘럼
                     </div>
                     <div className="description">
-                        총 {props.lectures.length}개 4시 10분의 수업
+                        총 {props.lectures.length}개
                     </div>
                 </div>
                 {props.isInstructor && <Link href={`/editor/${props.course.course_id}/`}>
@@ -104,7 +127,7 @@ const LectureList = (props: LectureListProps) => {
                 </Link>}
             </div>
             <div className="course-list">
-                {groupList}
+                {groupList.length === 0 ? <div className='empty'>아직 등록된 커리큘럼이 없습니다!</div> : groupList}
             </div>
         </StyledLectureList>
     )

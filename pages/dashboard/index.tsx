@@ -22,10 +22,12 @@ const StyledDashboard = styled.div`
     margin-top: 2rem;
     display: flex;
     justify-content: space-between;
+    margin-bottom: 1rem;
   }
   .course-list{
     display: flex;
     flex-direction: row;
+    padding-bottom: 1rem;
     
     .empty{
       display: flex;
@@ -75,28 +77,23 @@ const Dashboard = () => {
 
 
     const courseInstructorList = courses.result.map(course => {
-        const {title, amount, course_id} = course;
         return (
-            <Link key={`course_list_${course_id}`} href={`/dashboard/${course_id}/`}>
+            <Link key={`course_list_${course.course_id}`} href={`/dashboard/${course.course_id}/`}>
                 <PageCard
-                    key={`dashboard_${course_id}`}
-                    title={title}
-                    amount={amount}
-                    instructor={userInfo.name ?? ''}>
+                    key={`dashboard_${course.course_id}`}
+                    course={course}
+                    >
                 </PageCard>
             </Link>
         )
     });
 
     const courseUserList = coursesByUser.result.map(course => {
-        const {title, amount, course_id, instructor: {name}} = course;
         return (
-            <Link key={`course_list_${course_id}`} href={`/course/${course_id}/`}>
+            <Link key={`course_list_${course.course_id}`} href={`/course/${course.course_id}/`}>
                 <PageCard
-                    key={`dashboard_${course_id}`}
-                    title={title}
-                    amount={amount}
-                    instructor={name}>
+                    key={`dashboard_${course.course_id}`}
+                    course={course}>
                 </PageCard>
             </Link>
         )

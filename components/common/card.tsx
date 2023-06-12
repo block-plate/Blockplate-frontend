@@ -2,6 +2,7 @@ import styled from "styled-components";
 import React from "react";
 import MockUpImage from '@/public/images/mock_image.png'
 import Image from "next/image";
+import {Course} from "@/types/course/course";
 
 const StyledPageCard = styled.div`
    box-shadow: 0 10px 40px #c3d0e2b3;
@@ -10,7 +11,8 @@ const StyledPageCard = styled.div`
    width: 100%;
    img{
     width: 100%;
-    height: auto;
+    height: 180px;
+    object-fit: cover;
     border-radius: 8px 8px 0px 0;
    }
    & + &{
@@ -34,25 +36,23 @@ const StyledPageCard = styled.div`
 
 type CardProps = {
     children?: React.ReactNode;
-    title: string,
-    amount: number,
-    instructor: string,
+    course: Course,
 };
 
 
 const PageCard = (props: CardProps) => {
     return (
         <StyledPageCard className="course">
-            <Image src={MockUpImage} alt={'mock-up-image'}></Image>
+            <img src={props.course.image} alt={'mock-up-image'}></img>
             <div className='contents'>
                 <div className='title'>
-                    {props.title}
+                    {props.course.title}
                 </div>
                 <div className='instructor'>
-                    {props.instructor}
+                    {props.course.instructor.name}
                 </div>
                 <div className='price'>
-                    <b>PCT {props.amount}</b>
+                    <b>PCT {props.course.amount}</b>
                 </div>
             </div>
         </StyledPageCard>
